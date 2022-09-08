@@ -5,6 +5,7 @@ import RequireAuth from "./componenents/RequireAuth";
 import { Routes, Route } from "react-router-dom";
 import Home from "./componenents/Home";
 import LinkPage from "./componenents/LinkPage";
+import Admin from "./componenents/Admin";
 
 function App() {
   return (
@@ -17,6 +18,7 @@ function App() {
 
         <Route element={<RequireAuth />}>
           <Route path="/" element={<Home />} />
+          <Route path="admin" element={<Admin />} />
         </Route>
       </Route>
     </Routes>
