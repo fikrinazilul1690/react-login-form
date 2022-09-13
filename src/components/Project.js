@@ -1,6 +1,6 @@
-import { useState, useEffect } from "react";
-import useAxiosPrivate from "../hooks/useAxiosPrivate";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useState, useEffect } from 'react';
+import useAxiosPrivate from '../hooks/useAxiosPrivate';
+import { useNavigate, useLocation } from 'react-router-dom';
 
 const Project = () => {
   const [project, setProject] = useState();
@@ -9,28 +9,28 @@ const Project = () => {
   const location = useLocation();
 
   useEffect(() => {
-    let isMounted = true;
     const controller = new AbortController();
 
     const getProject = async () => {
-      try {
-        const response = await axiosPrivate.get("/project", {
+      await axiosPrivate
+        .get('/project', {
           signal: controller.signal,
+        })
+        .then((response) => {
+          console.log(response?.data);
+          setProject(response?.data);
+        })
+        .catch((err) => {
+          if (!controller.signal.aborted) {
+            console.log(err);
+            navigate('/login', { state: { from: location }, replace: true });
+          }
         });
-        console.log(response.data);
-        isMounted && setProject(response.data);
-      } catch (err) {
-        if (isMounted) {
-          console.log(err);
-          navigate("/login", { state: { from: location }, replace: true });
-        }
-      }
     };
 
     getProject();
 
     return () => {
-      isMounted = false;
       controller.abort();
     };
   }, []);

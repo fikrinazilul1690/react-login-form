@@ -1,19 +1,15 @@
-import useAxiosPrivate from "./useAxiosPrivate";
-import useAuth from "./useAuth";
+import axios from '../api/axios';
+import useAuth from './useAuth';
 
 const useLogout = () => {
   const { setAuth } = useAuth();
-  const axiosPrivate = useAxiosPrivate();
 
   const logout = async () => {
     try {
-      await axiosPrivate
-        .patch("/auth/revoke", null, {
-          withCredentials: true,
-        })
-        .then(() => {
-          setAuth({});
-        });
+      setAuth({});
+      await axios.post('/auth/revoke', null, {
+        withCredentials: true,
+      });
     } catch (err) {
       console.log(err);
     }
