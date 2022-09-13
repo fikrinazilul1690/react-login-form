@@ -1,11 +1,12 @@
-import Login from "./componenents/Login";
-import Register from "./componenents/Register";
-import Layout from "./componenents/Layout";
-import RequireAuth from "./componenents/RequireAuth";
+import Login from "./components/Login";
+import Register from "./components/Register";
+import Layout from "./components/Layout";
+import RequireAuth from "./components/RequireAuth";
 import { Routes, Route } from "react-router-dom";
-import Home from "./componenents/Home";
-import LinkPage from "./componenents/LinkPage";
-import Admin from "./componenents/Admin";
+import Home from "./components/Home";
+import LinkPage from "./components/LinkPage";
+import Admin from "./components/Admin";
+import PersistLogin from "./components/PersistLogin";
 
 function App() {
   return (
@@ -16,9 +17,11 @@ function App() {
         <Route path="register" element={<Register />} />
         <Route path="linkpage" element={<LinkPage />} />
 
-        <Route element={<RequireAuth />}>
-          <Route path="/" element={<Home />} />
-          <Route path="admin" element={<Admin />} />
+        <Route element={<PersistLogin />}>
+          <Route element={<RequireAuth />}>
+            <Route path="/" element={<Home />} />
+            <Route path="admin" element={<Admin />} />
+          </Route>
         </Route>
       </Route>
     </Routes>

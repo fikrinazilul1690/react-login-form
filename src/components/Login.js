@@ -102,7 +102,7 @@ const Login = () => {
         <br />
         <span>
           {/*put router link here */}
-          <Link to={"register"}>Sign Up</Link>
+          <Link to={"/register"}>Sign Up</Link>
         </span>
       </p>
     </section>

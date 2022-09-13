@@ -37,7 +37,7 @@ const Project = () => {
 
   return (
     <article>
-      <h2>Users List</h2>
+      <h2>Project List</h2>
       {project?.length ? (
         <ul>
           {project.map((project, i) => (
