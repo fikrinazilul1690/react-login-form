@@ -1,5 +1,5 @@
-import axios from '../api/axios';
-import useAuth from './useAuth';
+import axios from "../api/axios";
+import useAuth from "./useAuth";
 
 const useLogout = () => {
   const { setAuth } = useAuth();
@@ -7,7 +7,7 @@ const useLogout = () => {
   const logout = async () => {
     try {
       setAuth({});
-      await axios.post('/auth/revoke', null, {
+      await axios.post("/auth/revoke", null, {
         withCredentials: true,
       });
     } catch (err) {
