@@ -3,12 +3,14 @@ import { useState, useEffect } from "react";
 import useRefreshToken from "../hooks/useRefreshToken";
 import useAuth from "../hooks/useAuth";
 import useLogout from "../hooks/useLogout";
+import useLocalStorage from "../hooks/useLocalStorage";
 
 const PersistLogin = () => {
   const [isLoading, setIsLoading] = useState(true);
   const refresh = useRefreshToken();
   const logout = useLogout();
-  const { auth, persist, isLoggedIn, setIsLoggedIn } = useAuth();
+  const { auth } = useAuth();
+  const [persist] = useLocalStorage("persist", false);
 
   useEffect(() => {
     let isMounted = true;
@@ -19,7 +21,6 @@ const PersistLogin = () => {
         console.log(err);
       } finally {
         isMounted && setIsLoading(false);
-        isMounted && !persist && setIsLoggedIn(false);
       }
     };
 
@@ -28,15 +29,12 @@ const PersistLogin = () => {
     return () => (isMounted = false);
   }, []);
 
+  // Delete on prod
   useEffect(() => {
     console.log(`isLoading: ${isLoading}`);
-    console.log(auth);
+    console.log(auth.user);
     console.log(`at: ${JSON.stringify(auth?.accessToken)}`);
   }, [isLoading]);
-
-  useEffect(() => {
-    console.log(`isLoggedIn: ${isLoggedIn}`);
-  }, [isLoggedIn]);
 
   return (
     <>{!persist ? <Outlet /> : isLoading ? <p>Loading...</p> : <Outlet />}</>

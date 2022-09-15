@@ -6,10 +6,10 @@ const useLogout = () => {
 
   const logout = async () => {
     try {
-      setAuth({});
       await axios.post("/auth/revoke", null, {
         withCredentials: true,
       });
+      setAuth({});
     } catch (err) {
       console.log(err);
     }

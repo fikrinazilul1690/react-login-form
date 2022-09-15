@@ -1,17 +1,14 @@
 import { useNavigate, Link } from "react-router-dom";
-import useAuth from "../hooks/useAuth";
 import useLogout from "../hooks/useLogout";
 
 const Home = () => {
   const navigate = useNavigate();
   const logout = useLogout();
-  const { setIsLoggedIn } = useAuth();
 
   const signOut = async () => {
     // if used in more components, this should be in context
     // axios to /logout endpoint
     await logout();
-    setIsLoggedIn(false);
     navigate("/linkpage");
   };
 

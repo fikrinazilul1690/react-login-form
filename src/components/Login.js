@@ -4,10 +4,14 @@ import { Link, useNavigate, useLocation } from "react-router-dom";
 
 import axios from "../api/axios";
 import useInput from "../hooks/useInput";
+import useToggle from "../hooks/useToggle";
+
+import jwtDecode from "jwt-decode";
 const LOGIN_URL = "/auth/login";
 
 const Login = () => {
-  const { setAuth, persist, setPersist, isLoggedIn, setIsLoggedIn } = useAuth();
+  const { setAuth } = useAuth();
+  const [check, toggleCheck] = useToggle("persist", false);
 
   const navigate = useNavigate();
   const location = useLocation();
@@ -30,7 +34,6 @@ const Login = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setIsLoggedIn(true);
     try {
       const response = await axios.post(
         LOGIN_URL,
@@ -40,9 +43,10 @@ const Login = () => {
           withCredentials: true,
         }
       );
-      console.log(JSON.stringify(response?.data));
+      console.log(response);
       const accessToken = response?.data?.access_token;
-      setAuth({ user: email, accessToken });
+      const decode = accessToken ? jwtDecode(accessToken) : undefined;
+      setAuth({ user: decode?.sub });
       resetEmail("");
       setPwd("");
       navigate(from, { replace: true });
@@ -67,15 +71,6 @@ const Login = () => {
       errRef.current.focus();
     }
   };
-
-  const togglePersist = () => {
-    setPersist((prev) => !prev);
-  };
-
-  useEffect(() => {
-    localStorage.setItem("persist", persist);
-    localStorage.setItem("login", isLoggedIn);
-  }, [persist, isLoggedIn]);
 
   return (
     <section>
@@ -110,8 +105,8 @@ const Login = () => {
           <input
             type={"checkbox"}
             id="persist"
-            onChange={togglePersist}
-            checked={persist}
+            onChange={toggleCheck}
+            checked={check}
           />
           <label htmlFor="persist">Trust This Device</label>
         </div>
