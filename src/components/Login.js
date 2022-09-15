@@ -46,7 +46,7 @@ const Login = () => {
       console.log(response);
       const accessToken = response?.data?.access_token;
       const decode = accessToken ? jwtDecode(accessToken) : undefined;
-      setAuth({ user: decode?.sub });
+      setAuth({ user: decode?.sub.data });
       resetEmail("");
       setPwd("");
       navigate(from, { replace: true });
